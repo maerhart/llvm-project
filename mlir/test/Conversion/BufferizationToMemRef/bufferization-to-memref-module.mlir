@@ -132,6 +132,7 @@ func.func @conversion_dealloc_one_memref_and_multiple_retained(%arg0: memref<2xf
 
 // -----
 
+// expected-eror @below{{library function required for generic lowering, but cannot be automatically inserted when operating on functions}}
 func.func @conversion_dealloc_multiple_memrefs_and_retained(%arg0: memref<2xf32>, %arg1: memref<5xf32>, %arg2: memref<1xf32>, %arg3: i1, %arg4: i1, %arg5: memref<2xf32>) -> (i1, i1) {
   %0:2 = bufferization.dealloc (%arg0, %arg1 : memref<2xf32>, memref<5xf32>) if (%arg3, %arg4) retain (%arg2, %arg5 : memref<1xf32>, memref<2xf32>)
   return %0#0, %0#1 : i1, i1
