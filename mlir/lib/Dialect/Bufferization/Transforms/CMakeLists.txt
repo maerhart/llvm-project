@@ -1,4 +1,5 @@
 add_mlir_dialect_library(MLIRBufferizationTransforms
+  BufferAllocationAnalysis.cpp
   Bufferize.cpp
   BufferDeallocation.cpp
   BufferDeallocationSimplification.cpp
