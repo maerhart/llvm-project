@@ -367,6 +367,8 @@ extern "C" MLIR_RUNNERUTILS_EXPORT void
 _mlir_ciface_printMemrefShapeC64(UnrankedMemRefType<impl::complex64> *m);
 
 extern "C" MLIR_RUNNERUTILS_EXPORT void
+_mlir_ciface_printMemrefI1(UnrankedMemRefType<bool> *m);
+extern "C" MLIR_RUNNERUTILS_EXPORT void
 _mlir_ciface_printMemrefI8(UnrankedMemRefType<int8_t> *m);
 extern "C" MLIR_RUNNERUTILS_EXPORT void
 _mlir_ciface_printMemrefI32(UnrankedMemRefType<int32_t> *m);

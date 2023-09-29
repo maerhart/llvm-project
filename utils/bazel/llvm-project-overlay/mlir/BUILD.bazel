@@ -12309,6 +12309,7 @@ cc_library(
     hdrs = ["include/mlir/Dialect/Bufferization/Pipelines/Passes.h"],
     includes = ["include"],
     deps = [
+        ":BufferizationDialect",
         ":BufferizationToMemRef",
         ":BufferizationTransforms",
         ":FuncDialect",

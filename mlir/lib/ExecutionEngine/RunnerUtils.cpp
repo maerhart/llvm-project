@@ -77,6 +77,10 @@ extern "C" void _mlir_ciface_printMemrefVector4x4xf32(
   impl::printMemRef(*M);
 }
 
+extern "C" void _mlir_ciface_printMemrefI1(UnrankedMemRefType<bool> *M) {
+  impl::printMemRef(*M);
+}
+
 extern "C" void _mlir_ciface_printMemrefI8(UnrankedMemRefType<int8_t> *M) {
   impl::printMemRef(*M);
 }
