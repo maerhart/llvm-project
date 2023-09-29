@@ -60,6 +60,10 @@ def Bufferization_Dialect : Dialect {
     /// arguments during One-Shot Module Bufferize.
     constexpr const static ::llvm::StringLiteral
         kBufferLayoutAttrName = "bufferization.buffer_layout";
+
+    constexpr const static ::llvm::StringLiteral
+        kDeallocationNeverAcquireAttrName =
+            "bufferization.deallocation.never_aquire";
   }];
   let hasOperationAttrVerify = 1;
 }

@@ -11,6 +11,7 @@
 #include "mlir/Conversion/GPUToNVVM/GPUToNVVMPass.h"
 #include "mlir/Conversion/Passes.h"
 #include "mlir/Dialect/Arith/Transforms/Passes.h"
+#include "mlir/Dialect/Bufferization/Pipelines/Passes.h"
 #include "mlir/Dialect/Bufferization/Transforms/Bufferize.h"
 #include "mlir/Dialect/Bufferization/Transforms/OneShotAnalysis.h"
 #include "mlir/Dialect/Bufferization/Transforms/Passes.h"
@@ -59,8 +60,13 @@ void mlir::sparse_tensor::buildSparseCompiler(
   // it to this pipeline.
   pm.addNestedPass<func::FuncOp>(createConvertLinalgToLoopsPass());
   pm.addNestedPass<func::FuncOp>(createConvertVectorToSCFPass());
-  pm.addNestedPass<func::FuncOp>(memref::createExpandReallocPass());
+  bufferization::BufferDeallocationPipelineOptions deallocationOptions;
+  deallocationOptions.privateFunctionDynamicOwnership.setValue(false);
+  deallocationOptions.removeExistingDeallocations.setValue(true);
+  deallocationOptions.allowCloning.setValue(true);
+  bufferization::buildBufferDeallocationPipeline(pm, deallocationOptions);
   pm.addNestedPass<func::FuncOp>(createConvertSCFToCFPass());
+  pm.addPass(createBufferizationToMemRefPass());
   pm.addPass(memref::createExpandStridedMetadataPass());
   pm.addPass(createLowerAffinePass());
   pm.addPass(createConvertVectorToLLVMPass(options.lowerVectorToLLVMOptions()));

@@ -755,9 +755,18 @@ FailureOr<Operation *> BufferDeallocation::handleInterface(CallOpInterface op) {
   // According to the function boundary ABI we are guaranteed to get ownership
   // of all MemRefs returned by the function. Thus we set ownership to constant
   // 'true' and remember to deallocate it.
+  ArrayAttr resAttrs = cast<CallableOpInterface>(funcOp).getResAttrsAttr();
+  auto callableOp = cast<CallableOpInterface>(funcOp);
   Value trueVal = buildBoolValue(builder, op.getLoc(), true);
+  Value falseVal = buildBoolValue(builder, op.getLoc(), false);
   for (auto result : llvm::make_filter_range(op->getResults(), isMemref)) {
-    state.updateOwnership(result, trueVal);
+    Value ownership = trueVal;
+    if (resAttrs &&
+        cast<DictionaryAttr>(resAttrs.getValue()[result.getResultNumber()])
+            .contains(BufferizationDialect::kDeallocationNeverAcquireAttrName))
+      ownership = falseVal;
+
+    state.updateOwnership(result, ownership);
     state.addMemrefToDeallocate(result, result.getParentBlock());
   }
 

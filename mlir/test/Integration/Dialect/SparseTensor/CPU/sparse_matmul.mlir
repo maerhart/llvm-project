@@ -55,7 +55,7 @@ module {
   //
   // Computes C = A x B with all matrices dense.
   //
-  func.func @matmul1(%A: tensor<4x8xf64>, %B: tensor<8x4xf64>,
+  func.func private @matmul1(%A: tensor<4x8xf64>, %B: tensor<8x4xf64>,
                      %C: tensor<4x4xf64>) -> tensor<4x4xf64> {
     %D = linalg.matmul
       ins(%A, %B: tensor<4x8xf64>, tensor<8x4xf64>)
@@ -66,7 +66,7 @@ module {
   //
   // Computes C = A x B with all matrices sparse (SpMSpM) in CSR.
   //
-  func.func @matmul2(%A: tensor<4x8xf64, #CSR>,
+  func.func private @matmul2(%A: tensor<4x8xf64, #CSR>,
                      %B: tensor<8x4xf64, #CSR>) -> tensor<4x4xf64, #CSR> {
     %C = tensor.empty() : tensor<4x4xf64, #CSR>
     %D = linalg.matmul
@@ -78,7 +78,7 @@ module {
   //
   // Computes C = A x B with all matrices sparse (SpMSpM) in DCSR.
   //
-  func.func @matmul3(%A: tensor<4x8xf64, #DCSR>,
+  func.func private @matmul3(%A: tensor<4x8xf64, #DCSR>,
                      %B: tensor<8x4xf64, #DCSR>) -> tensor<4x4xf64, #DCSR> {
     %C = tensor.empty() : tensor<4x4xf64, #DCSR>
     %D = linalg.matmul
